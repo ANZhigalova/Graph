@@ -104,9 +104,11 @@ class GraphPainter(val graph: MutableList<MutableList<Double>>) : Painter {
                             val toI = toInd + fromInd + 1
                             g.color = Color.BLACK
                             g.drawLine(vPos[fromInd].x, vPos[fromInd].y, vPos[toI].x, vPos[toI].y)
+                            var alpha = atan((vPos[toI].y - vPos[fromInd].y)/(vPos[toI].x - vPos[fromInd].x).toDouble())
+                            if(alpha<0) alpha += PI
                             paintEdgesWeight(
                                 g,
-                                atan(abs(vPos[toI].x - vPos[fromInd].x)/abs(vPos[toI].y - vPos[fromInd].y).toDouble()),
+                                alpha,
                                 weight,
                                 ( (vPos[toI].x+vPos[fromInd].x)/2 ).toDouble(),
                                 ( (vPos[toI].y+vPos[fromInd].y)/2 ).toDouble()
@@ -120,9 +122,9 @@ class GraphPainter(val graph: MutableList<MutableList<Double>>) : Painter {
     fun paintEdgesWeight(g:Graphics, alfa: Double, w: Double, s1: Double, s2: Double){
         (g as Graphics2D).apply(){
             color = Color.BLUE
-            rotate( PI/2+alfa, s1, s2)
+            rotate( alfa, s1, s2)
             g.drawString(w.toString(),s1.toFloat(), s2.toFloat() )
-            g.rotate(-(PI/2+alfa), s1, s2)
+            g.rotate(-(alfa), s1, s2)
         }
     }
 
